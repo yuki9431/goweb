@@ -39,20 +39,24 @@ func main() {
 	var addr = flag.String("addr", ":8080", "アプリケーションのアドレス")
 	flag.Parse()
 
+	//callbackUriGoogle := "http://localhost/auth/callback/google"
+	googleCallbackUri := "http://blacksnowpi.f5.si/auth/callback/google"
+	googleClientId := "441709820078-bvl9d7p5ils5la21ftbjomj4c0ee11oq.apps.googleusercontent.com"
+	googleClientSecrete := "byi4EyHsYCtE0Xz0shUPFZcO"
+
 	// 認証のセットアップ
 	gomniauth.SetSecurityKey("test")
-	gomniauth.WithProviders(google.New("441709820078-bvl9d7p5ils5la21ftbjomj4c0ee11oq.apps.googleusercontent.com", "byi4EyHsYCtE0Xz0shUPFZcO", "http://localhost/auth/callback/google"))
+	gomniauth.WithProviders(google.New(googleClientId, googleClientSecrete, googleCallbackUri))
 
 	r := newRoom()
 	r.tracer = trace.New(os.Stdout)
+	go r.run()
 
 	http.Handle("/chat", MustAuth(&templateHandler{filename: "chat.html"}))
 	http.Handle("/login", &templateHandler{filename: "login.html"})
 	http.HandleFunc("/auth/", loginHandler)
 	http.Handle("/room", r)
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("templates/css"))))
-
-	go r.run()
 
 	// Start WebServer
 	log.Println("Start WebServer port", *addr)
