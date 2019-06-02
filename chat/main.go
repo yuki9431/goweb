@@ -36,11 +36,11 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	var addr = flag.String("addr", ":8080", "アプリケーションのアドレス")
+	var addr = flag.String("addr", ":80", "アプリケーションのアドレス")
 	flag.Parse()
 
-	//callbackUriGoogle := "http://localhost/auth/callback/google"
-	googleCallbackUri := "http://blacksnowpi.f5.si/auth/callback/google"
+	googleCallbackUri := "http://localhost/auth/callback/google"
+	//googleCallbackUri := "http://blacksnowpi.f5.si/auth/callback/google"
 	googleClientId := "441709820078-bvl9d7p5ils5la21ftbjomj4c0ee11oq.apps.googleusercontent.com"
 	googleClientSecrete := "byi4EyHsYCtE0Xz0shUPFZcO"
 
